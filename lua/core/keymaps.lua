@@ -30,8 +30,8 @@ map("n", "<Leader>w", ":w<CR>")     -- Save
 map("n", "<Leader>W", ":wq<CR>")    -- Save and quit
 map("n", "<Leader>q", ":q<CR>")     -- Quit
 map("n", "<Leader>Q", ":qa!<CR>")   -- Force quit
-map("n", "<Leader>+", "5<C-w>>")    -- Make bigger the window
-map("n", "<Leader>-", "5<C-w><")    -- Make shorter the window
+map("n", "<Leader>+", ":vertical resize +2<CR>:resize +2<CR>")    -- Make bigger the window
+map("n", "<Leader>-", ":vertical resize -2<CR>:resize -2<CR>")    -- Make smaller the window
 map("n", "<Leader>s", ":/")         -- Search
 map("n", "<Leader>S", ":nohl<CR>")  -- Clear search
 map("n", "<Leader>a", "ggVG")       -- Select all
@@ -51,7 +51,7 @@ map("n", "<C-l>", "<C-w>l")
 ---------------
 -- Terminal
 
-function open_terminal(instructions)
+function open_terminal()
     -- Go most right buffer
     vim.cmd("wincmd l")
     vim.cmd("wincmd l")
@@ -70,7 +70,7 @@ function open_terminal(instructions)
         vim.api.nvim_buf_delete(bufnr, { force = true })
     else
         -- Open a new terminal
-        vim.cmd(instructions)
+        vim.cmd('below split term://zsh')
 
         -- Turn off line numbers
         vim.cmd("set nonumber")
@@ -79,13 +79,11 @@ function open_terminal(instructions)
         -- Close terminal on Ctrl + t
         map("t", "<C-t>", "<C-\\><C-n>:q!<CR>")
         -- Change terminal mode to normal mode on Ctrl + h
-        map("t", "<C-h>", "<C-\\><C-n><C-w>h")
+        map("t", "<C-h>", "<C-\\><C-n>")
 
         -- Switch to terminal mode
         vim.cmd("startinsert")
     end
 end
 
-map("n", "<Leader>t", ":lua open_terminal('below split term://zsh')<CR>")        -- Open terminal below
-map("n", "<Leader>b", ":lua open_terminal('below split | term python3 %')<CR>")  -- Run python
-
+map("n", "<Leader>t", ":lua open_terminal()<CR>")        -- Open terminal below
